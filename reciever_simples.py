@@ -1,7 +1,7 @@
 import socket
 import struct
 
-grupo_ip = '224.1.1.1'
+grupo_ip = '224.0.0.2'
 porta = 8888
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)

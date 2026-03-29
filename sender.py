@@ -3,7 +3,7 @@ import time
 from datetime import datetime
 import struct
 
-GRUPO_MULTICAST = '224.1.1.1'
+GRUPO_MULTICAST = '224.0.0.2'
 PORTA = 8888
 delta = 2  # tempo em segundos
 
