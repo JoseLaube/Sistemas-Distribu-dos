@@ -1,0 +1,2 @@
+EMBARQUE: Carga 1 [450] -> Navio 1 [titanic]. Cap. Restante: 50,00
+EMBARQUE: Carga 2 [300] -> Navio 2 [titanic 2]. Cap. Restante: 300,00
