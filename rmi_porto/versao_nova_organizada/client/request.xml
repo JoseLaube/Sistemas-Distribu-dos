@@ -1,0 +1,8 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:mid="http://middleware/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <mid:embarcar>
+         <arg0>OTIMIZAR</arg0>
+      </mid:embarcar>
+   </soapenv:Body>
+</soapenv:Envelope>
