@@ -1,25 +1,64 @@
-# O Zeep é o equivalente ao javax.xml.ws.Service do Java
+import sys
 from zeep import Client
+from zeep.transports import Transport
+import requests
 
-try:
-    print("[Cliente] Conectando ao porto via SOAP...")
-    
-    wsdl_url = 'http://localhost:8080/wsporto?wsdl'
-    
-    # 2. Equivalente ao 'Service.create(url, qname)' e 'getPort(...)'
-    # O Zeep faz isso em uma linha só!
-    cliente = Client(wsdl=wsdl_url)
-    
-    print("[Cliente] Conexão estabelecida! Solicitando otimização...")
-    
-    # 3. Equivalente ao 'server.sayHello(name)' ou 'porto.embarcar("OTIMIZAR")'
-    resultado = cliente.service.embarcar("OTIMIZAR")
-    
-    print(f"[Cliente] Sucesso! Eficiência: {resultado * 100}%")
-    
-    print("\n[Cliente] Solicitando relatório de embarque...")
-    relatorio = cliente.service.relatorio_embarque()
-    print(relatorio)
+# Use 127.0.0.1 para garantir que ele vá pelo IPv4 que o seu Java abriu
+WSDL_URL = "http://127.0.0.1:8080/wsporto?wsdl"
 
-except Exception as e:
-    print(f"[Cliente] Erro na comunicação SOAP: {e}")
+def conectar_ws():
+   
+    try:
+        # Criamos uma sessão simples do requests
+        session = requests.Session()
+        # O segredo é passar a session dentro do objeto Transport do Zeep
+        transport = Transport(session=session, timeout=10)
+        
+        cliente = Client(wsdl=WSDL_URL, transport=transport)
+        
+        print("Conectado com sucesso!")
+        return cliente
+    except Exception as e:
+        print(f"Erro ao carregar WSDL: {e}")
+        print("\nDica: Verifique se o Middleware Java imprimiu 'Middleware SOAP Rodando'.")
+        sys.exit(1)
+
+def menu():
+    cliente = conectar_ws()
+    
+    while True:
+        print("\n" + "="*40)
+        print("      SISTEMA PORTUÁRIO - CLIENTE")
+        print("="*40)
+        print("1. Otimizar Embarque")
+        print("2. Ver Relatório")
+        print("3. Sair")
+        print("="*40)
+        
+        opcao = input("Escolha uma opção: ").strip()
+
+        if opcao == '1':
+            print("\nEnviando comando OTIMIZAR...")
+            try:
+                # Chama o método embarcar do seu Java
+                resultado = cliente.service.embarcar("OTIMIZAR")
+                print(f"Eficiência da Otimização: {resultado * 100:.2f}%")
+            except Exception as e:
+                print(f"Erro na requisição: {e}")
+                
+        elif opcao == '2':
+            print("\nBuscando relatório...")
+            try:
+                relatorio = cliente.service.relatorio_embarque()
+                print(f"\nSTATUS DO PORTO:\n{relatorio}")
+            except Exception as e:
+                print(f"Erro ao buscar relatório: {e}")
+                
+        elif opcao == '3':
+            print("Saindo...")
+            break
+        else:
+            print("Opção inválida!")
+
+if __name__ == "__main__":
+    menu()
