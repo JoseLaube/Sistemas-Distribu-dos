@@ -1,0 +1,23 @@
+# Aponta o terminal atual para usar o JDK 8
+export PATH=/usr/local/jdk1.8.0_131/bin:$PATH
+
+# PASSO A: Apaga todos os arquivos compilados antigos (Garante uma compilação limpa)
+rm *.class
+
+# PASSO B: Compila todos os arquivos fonte de uma vez
+javac *.java
+
+
+
+# 1º - Ligue o Backend RMI (Cérebro do Sistema - Porta 6600)
+java porto.PortoServer
+
+# 2º - Ligue o Middleware SOAP (O Tradutor - Porta 8080)
+java porto.PublicadorWS
+
+# 3º - Acione os Clientes
+# Para testar a interface nativa RMI:
+java porto.Cliente
+
+# Para testar a interoperabilidade via SOAP:
+java porto.ClienteSOAPDinamico
