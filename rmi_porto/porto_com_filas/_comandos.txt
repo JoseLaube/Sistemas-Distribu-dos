@@ -1,0 +1,25 @@
+# para o compilador encontrar o RabbitMQ
+export CP=.:/usr/local/rabbitmq-jar/amqp-client-4.0.2.jar:/usr/local/rabbitmq-jar/slf4j-api-1.7.21.jar:/usr/local/rabbitmq-jar/slf4j-simple-1.7.22.jar
+
+# Aponta o terminal atual para usar o JDK 8
+export PATH=/usr/local/jdk1.8.0_131/bin:$PATH
+
+# PASSO 0:
+cd porto_com_filas
+
+# PASSO 1:
+rm *.class
+
+# PASSO 2: Compila todos os arquivos + RabbitMQ
+javac -cp $CP *.java
+
+# PASSO 2.5: ABRIR TERMINAIS E VOLTAR PARA A PASTA HOME
+
+# PASSO 3: Servidor RMI
+java -cp $CP porto_com_filas.PortoServer
+
+# PASSO 4: Consumidor multi-thread
+java -cp $CP porto_com_filas.WorkerRMI
+
+# PASSO 5: Injetor de dados
+java -cp $CP porto_com_filas.ProdutorFilas
